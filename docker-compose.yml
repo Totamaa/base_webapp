@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: database
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal-network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT}
+      API_NAME: ${API_NAME}
+      API_DESCRIPTION: ${API_DESCRIPTION}
+      API_VERSION: ${API_VERSION}
+      API_PORT: ${PORT}
+      API_WORKERS: ${API_WORKERS}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - db
+    networks:
+      - internal-network
+      - external-network
+
+volumes:
+  postgres_data:
+
+networks:
+  internal-network:
+    internal: true
+  external-network:
+    driver: bridge
