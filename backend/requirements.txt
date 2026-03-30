@@ -22,7 +22,7 @@ pydantic==2.10.4
 pydantic-extra-types==2.10.1
 pydantic-settings==2.7.1
 pydantic_core==2.27.2
-Pygments==2.18.0
+Pygments==2.20.0
 python-dotenv==1.0.1
 python-multipart==0.0.20
 PyYAML==6.0.2
